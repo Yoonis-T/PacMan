@@ -1,0 +1,169 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using TMPro;
+
+[DefaultExecutionOrder(-100)]
+public class GameManager : MonoBehaviour
+{
+    public static GameManager Instance { get; private set; }
+
+    [SerializeField] private Ghost[] ghosts;
+    [SerializeField] private Pacman pacman;
+    [SerializeField] private Transform pellets;
+    [SerializeField] private TMP_Text gameOverText;
+    [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private TMP_Text livesText;
+    [SerializeField] private GameObject restartButton;
+    [SerializeField] private GameObject quitButton;
+
+    public int score { get; private set; } = 0;
+    public int lives { get; private set; } = 3;
+    private int ghostMultiplier = 1;
+
+    private void Awake()
+    {
+        if (Instance != null) {
+            DestroyImmediate(gameObject);
+        } else {
+            Instance = this;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this) {
+            Instance = null;
+        }
+    }
+
+    private void Start()
+    {
+        NewGame();
+    }
+
+    private void Update()
+    {
+        if (lives <= 0 && Input.anyKeyDown) {
+            NewGame();
+        }
+    }
+
+    private void NewGame()
+    {
+        restartButton.SetActive(false);  // ADD THIS
+        quitButton.SetActive(false);     // ADD THIS
+        SetScore(0);
+        SetLives(3);
+        NewRound();
+    }
+
+    private void NewRound()
+{
+    gameOverText.enabled = false;
+    SetScore(0);  // ADD THIS
+
+    Pellet[] allPellets = FindObjectsByType<Pellet>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+    foreach (Pellet pellet in allPellets) {
+        pellet.gameObject.SetActive(true);
+    }
+
+    Invoke(nameof(ResetState), 1f);
+}
+
+    private void ResetState()
+    {
+        for (int i = 0; i < ghosts.Length; i++) {
+            ghosts[i].ResetState();
+        }
+
+        pacman.ResetState();
+    }
+
+    private void GameOver()
+    {
+        gameOverText.enabled = true;
+        restartButton.SetActive(true);  // ADD THIS
+        quitButton.SetActive(true);     // ADD THIS
+
+        for (int i = 0; i < ghosts.Length; i++) {
+            ghosts[i].gameObject.SetActive(false);
+        }
+
+        pacman.gameObject.SetActive(false);
+    }
+    
+
+    private void SetLives(int lives)
+    {
+        this.lives = lives;
+        livesText.text = "x" + lives.ToString();
+    }
+
+    private void SetScore(int score)
+    {
+        this.score = score;
+        scoreText.text = score.ToString().PadLeft(2, '0');
+    }
+
+    public void PacmanEaten()
+    {
+        pacman.DeathSequence();
+
+        SetLives(lives - 1);
+
+        if (lives > 0) {
+            Invoke(nameof(ResetState), 3f);
+        } else {
+            GameOver();
+        }
+    }
+
+    public void GhostEaten(Ghost ghost)
+    {
+        int points = ghost.points * ghostMultiplier;
+        SetScore(score + points);
+
+        ghostMultiplier++;
+    }
+
+    public void PelletEaten(Pellet pellet)
+{
+    pellet.gameObject.SetActive(false);
+    SetScore(score + pellet.points);
+
+    if (score >= 2740)
+    {
+        Invoke(nameof(NewRound), 3f);
+    }
+}
+
+    public void PowerPelletEaten(PowerPellet pellet)
+    {
+        for (int i = 0; i < ghosts.Length; i++) {
+            ghosts[i].frightened.Enable(pellet.duration);
+        }
+
+        PelletEaten(pellet);
+        CancelInvoke(nameof(ResetGhostMultiplier));
+        Invoke(nameof(ResetGhostMultiplier), pellet.duration);
+    }
+
+   
+
+    private void ResetGhostMultiplier()
+    {
+        ghostMultiplier = 1;
+    }
+
+
+    public void RestartGame()
+{
+    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+}
+
+public void QuitGame()
+{
+    Application.Quit();
+}
+
+}
