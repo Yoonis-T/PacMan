@@ -1,7 +1,3 @@
-
-
-https://github.com/user-attachments/assets/0fdb9526-7fcd-4265-9980-d3aac07b55da
-
 # 🟡 PacMan Unity Game
 
 A classic 2D PacMan-style arcade game built in Unity. Eat pellets, avoid ghosts, collect power-ups, and clear the maze to win!
@@ -98,11 +94,7 @@ Assets/
 
 ## 🎥 Gameplay
 
-
-
-https://github.com/user-attachments/assets/3235331d-c3a7-410c-8089-e85429f04c4d
-
-
+https://github.com/user-attachments/assets/0fdb9526-7fcd-4265-9980-d3aac07b55da
 
 ---
 
