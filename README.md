@@ -95,17 +95,6 @@ Assets/
 ## 🎥 Gameplay
 
 
-
-
-
-
-
-
-
-https://github.com/user-attachments/assets/504db840-d35b-4191-b28e-d27ebc4ccfbd
-
-
-
 ---
 
 ## 🏆 Objective
