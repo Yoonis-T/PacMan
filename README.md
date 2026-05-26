@@ -94,7 +94,17 @@ Assets/
 
 ## 🎥 Gameplay
 
-https://github.com/user-attachments/assets/0fdb9526-7fcd-4265-9980-d3aac07b55da
+
+
+
+
+
+
+
+
+https://github.com/user-attachments/assets/504db840-d35b-4191-b28e-d27ebc4ccfbd
+
+
 
 ---
 
