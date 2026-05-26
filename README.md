@@ -92,6 +92,11 @@ Assets/
 
 ---
 
+## 🎥 Gameplay
+
+
+---
+
 ## 🏆 Objective
 
 Eat every pellet in the maze while surviving the ghosts and achieve the highest score possible!
